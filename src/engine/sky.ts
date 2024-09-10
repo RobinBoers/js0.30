@@ -1,7 +1,7 @@
 import * as BABYLON from "@babylonjs/core";
 import type { Engine } from "noa-engine";
 
-export let clouds: BABYLON.Mesh;
+export let Clouds: BABYLON.Mesh;
 
 export function setupSkybox(noa: Engine) {
   const scene = noa.rendering.getScene();
@@ -10,7 +10,7 @@ export function setupSkybox(noa: Engine) {
     width: 2e3,
   };
 
-  clouds = BABYLON.MeshBuilder.CreatePlane("clouds", opts, scene);
+  Clouds = BABYLON.MeshBuilder.CreatePlane("clouds", opts, scene);
 
   const material = new BABYLON.StandardMaterial("cloud", scene);
   const texture = new BABYLON.Texture(
@@ -39,9 +39,9 @@ export function setupSkybox(noa: Engine) {
   material.backFaceCulling = false;
   material.disableLighting = true;
 
-  clouds.rotation.x = -Math.PI / 2;
-  clouds.material = material;
+  Clouds.rotation.x = -Math.PI / 2;
+  Clouds.material = material;
 
-  noa.rendering.addMeshToScene(clouds, false);
-  clouds.setPositionWithLocalVector(new BABYLON.Vector3(0, 68, 0));
+  noa.rendering.addMeshToScene(Clouds, false);
+  Clouds.setPositionWithLocalVector(new BABYLON.Vector3(0, 68, 0));
 }
