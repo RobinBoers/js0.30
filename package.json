@@ -1,0 +1,25 @@
+{
+  "name": "js0.30",
+  "description": "Classic Minecraft-compatible voxel client.",
+  "author": "Robijntje",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://git.dupunkto.org/~axcelott/js0.30.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RobinBoers/js0.30/issues"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "prettier": "^3.3.3"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "esbuild": "^0.23.1",
+    "aabb-3d": "github:RobinBoers/aabb-3d",
+    "noa-engine": "github:fenomas/noa#develop"
+  }
+}

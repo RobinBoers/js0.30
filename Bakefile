@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+trap clean 1 2 3 6 9
+
+SRC="src/main.ts"
+PUBLIC="public"
+DIST="dist"
+
+# Has bugs related to module resolution
+# BUILD="bun build --target=browser --format=esm --sourcemap=inline"
+BUILD="esbuild --bundle --target=esnext --format=iife --sourcemap=inline"
+
+setup() {
+  bun install
+}
+
+format() {
+  prettier --write .
+}
+
+build() {
+  if [ -e $DIST ]; then
+    echo >&2 "Error: Already built. Run \`clean\` first"
+    echo >&2
+    exit 1
+  fi
+
+  mkdir $DIST
+  cp $PUBLIC/* $DIST/
+
+  $BUILD $SRC --outdir=$DIST
+}
+
+serve() {
+  cd $DIST
+  waiter --dev
+}
+
+dev() {
+  # We serve from `public` in dev mode, because
+  # because otherwise the server has to be restarted
+  # for static assets to be rebuilt.
+  
+  DIST=$PUBLIC serve &
+  $BUILD $SRC --watch --outdir=$PUBLIC
+}
+
+clean() {
+  p:clean_if_exists $DIST
+  p:clean_if_exists $PUBLIC/main.js
+  killall waiter
+}
+
+p:clean_if_exists() {
+  if [ -e "$1" ]; then
+    rm -rf "$1"
+  fi
+}
