@@ -1,11 +1,14 @@
 import { Engine } from "noa-engine";
+import { setupSkybox } from "./engine/sky";
+
+const RENDER_DISTANCE = 100;
 
 const noa = new Engine({
   debug: true,
   showFPS: true,
-  chunkSize: 32,
-  chunkAddDistance: 2.5,
-  chunkRemoveDistance: 3.5,
+  chunkSize: 64,
+  chunkAddDistance: RENDER_DISTANCE,
+  chunkRemoveDistance: RENDER_DISTANCE,
 });
 
 const brownish = [0.45, 0.36, 0.22];
@@ -19,7 +22,7 @@ const DIRT = noa.registry.registerBlock(1, { material: "dirt" });
 const GRASS = noa.registry.registerBlock(2, { material: "grass" });
 
 function getVoxel(x: number, y: number, z: number) {
-  const height = 2 * Math.sin(x / 10) + 3 * Math.cos(z / 20);
+  const height = 2 * Math.sin(x / 10) + 3 * Math.cos(z / 20) + 30;
 
   switch (true) {
     case y < -3:
@@ -47,6 +50,8 @@ noa.world.on("worldDataNeeded", function (id, data, x, y, z) {
 
   noa.world.setChunkData(id, data);
 });
+
+setupSkybox(noa);
 
 // Place grass with left click.
 noa.inputs.down.on("fire", function () {
